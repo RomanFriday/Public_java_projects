@@ -1,4 +1,4 @@
-package my_extends;
+package my_exceptions;
 
 public class MinMoreMax extends Exception{
     String s = "Минимальное значение не может превышать максимальное ";
