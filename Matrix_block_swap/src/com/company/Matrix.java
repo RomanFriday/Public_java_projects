@@ -104,21 +104,21 @@ public class Matrix{
                 M[i][j] = u.get_int_from_file();
     }
 
-    public void print_matrix(){
+    /*public void print_matrix(){
         for(int i=0; i<lines; i++) {
             for (int j = 0; j < columns; j++)
                 System.out.print(" "+M[i][j]);
             System.out.println();
         }
-    }
+    }*/
 
-    public void print_matrix_to_file() throws IOException{
+    /*public void print_matrix_to_file() throws IOException{
         for(int i=0; i<lines; i++) {
             for (int j = 0; j < columns; j++)
                 u.out.write(" "+M[i][j]);
             u.out.write('\n');
         }
-    }
+    }*/
 
     public void block_swap(){
         double temp;
@@ -137,4 +137,16 @@ public class Matrix{
                 M[i][j+(columns+1)/2] = temp;
             }
     }
+
+    @Override
+    public String toString(){
+        String s = "";
+        for(int i=0; i<lines; i++){
+            for(int j=0; j<columns; j++)
+                s += " "+M[i][j];
+            s += "\n";
+        }
+        return s;
+    }
+
 }

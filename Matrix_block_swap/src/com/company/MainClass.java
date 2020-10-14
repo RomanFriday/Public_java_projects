@@ -28,7 +28,8 @@ public class MainClass {
         Matrix m = create_2_pow_n_matrix_from_file(u);
         m.enter_matrix_from_file();
         u.out.write("Исходная матрица:\n");
-        m.print_matrix_to_file();
+        //m.print_matrix_to_file();
+        u.out.write(m.toString());
         Matrix m1 = null;
         try{
             m1 = new Matrix(u, m);
@@ -38,7 +39,8 @@ public class MainClass {
         }
         m1.block_swap();
         u.out.write("\nНовая матрица:\n");
-        m1.print_matrix_to_file();
+       //m1.print_matrix_to_file();
+        u.out.write(m1.toString());
         u.out.close();
         u.in.close();
         return;
@@ -50,7 +52,8 @@ public class MainClass {
         System.out.println("Введите элементы матрицы ("+m.lines+"x"+m.columns+")");
         m.enter_matrix();
         System.out.println("Исходная матрица:");
-        m.print_matrix();
+        //m.print_matrix();
+        System.out.println(m.toString());
         Matrix m1 = null;
         try {
             m1 = new Matrix(u, m);
@@ -60,7 +63,8 @@ public class MainClass {
         }
         m1.block_swap();
         System.out.println("Новая матрица:");
-        m1.print_matrix();
+        //m1.print_matrix();
+        System.out.println(m.toString());
     }
 
     public static Matrix create_2_pow_n_matrix_from_file(Utl u) throws IOException, FileIsOver, NoUtl, NegativeSizeMatrix,MaxSizeMatrix{
