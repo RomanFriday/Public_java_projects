@@ -30,7 +30,12 @@ public class MainClass {
         u.out.write("Исходная матрица:\n");
         m.print_matrix_to_file();
         Matrix m1 = null;
-        try{  m1 = new Matrix(u, m);} catch (NullObject ex) { System.out.println(ex.getMessage()); }
+        try{
+            m1 = new Matrix(u, m);
+        } catch (NullObject ex) {
+            System.out.println(ex.getMessage());
+            return;
+        }
         m1.block_swap();
         u.out.write("\nНовая матрица:\n");
         m1.print_matrix_to_file();
@@ -40,19 +45,26 @@ public class MainClass {
     }
 
     public static void not_use_text(Utl u) throws NoUtl, NegativeSizeMatrix, MaxSizeMatrix, NullObject{
+        if(u == null) return;
         Matrix m = create_2_pow_n_matrix(u);
         System.out.println("Введите элементы матрицы ("+m.lines+"x"+m.columns+")");
         m.enter_matrix();
         System.out.println("Исходная матрица:");
         m.print_matrix();
         Matrix m1 = null;
-        try { m1 = new Matrix(u, m);} catch (NullObject ex) { System.out.println(ex.getMessage()); }
+        try {
+            m1 = new Matrix(u, m);
+        } catch (NullObject ex) {
+            System.out.println(ex.getMessage());
+            return;
+        }
         m1.block_swap();
         System.out.println("Новая матрица:");
         m1.print_matrix();
     }
 
     public static Matrix create_2_pow_n_matrix_from_file(Utl u) throws IOException, FileIsOver, NoUtl, NegativeSizeMatrix,MaxSizeMatrix{
+        if(u == null) return null;
         int size = 0;
         Matrix m = null;
         boolean all_is_ok = false;
@@ -80,6 +92,7 @@ public class MainClass {
     }
 
     public static Matrix create_2_pow_n_matrix(Utl u)throws NegativeSizeMatrix, MaxSizeMatrix, NoUtl{
+        if(u == null) return null;
         int size = 0;
         Matrix m = null;
         boolean all_is_ok = false;
