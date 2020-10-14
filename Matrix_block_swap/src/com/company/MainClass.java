@@ -32,12 +32,11 @@ public class MainClass {
         u.out.write(m.toString());
         Matrix m1 = null;
         try{
-            m1 = new Matrix(u, m);
+            m1 = m.block_swap();
         } catch (NullObject ex) {
             System.out.println(ex.getMessage());
             return;
         }
-        m1.block_swap();
         u.out.write("\nНовая матрица:\n");
        //m1.print_matrix_to_file();
         u.out.write(m1.toString());
@@ -46,7 +45,7 @@ public class MainClass {
         return;
     }
 
-    public static void not_use_text(Utl u) throws NoUtl, NegativeSizeMatrix, MaxSizeMatrix, NullObject{
+    public static void not_use_text(Utl u) throws IOException, NoUtl, NegativeSizeMatrix, MaxSizeMatrix, NullObject{
         if(u == null) return;
         Matrix m = create_2_pow_n_matrix(u);
         System.out.println("Введите элементы матрицы ("+m.lines+"x"+m.columns+")");
@@ -56,15 +55,14 @@ public class MainClass {
         System.out.println(m.toString());
         Matrix m1 = null;
         try {
-            m1 = new Matrix(u, m);
+            m1 = m.block_swap();
         } catch (NullObject ex) {
             System.out.println(ex.getMessage());
             return;
         }
-        m1.block_swap();
         System.out.println("Новая матрица:");
         //m1.print_matrix();
-        System.out.println(m.toString());
+        System.out.println(m1.toString());
     }
 
     public static Matrix create_2_pow_n_matrix_from_file(Utl u) throws IOException, FileIsOver, NoUtl, NegativeSizeMatrix,MaxSizeMatrix{
