@@ -24,6 +24,7 @@ public class MainClass {
     public static void use_text(Utl u) throws IOException, FileIsOver, NoUtl, NegativeSizeMatrix, MaxSizeMatrix, NullObject{
         u = new Utl("C:\\Users\\Working\\IdeaProjects\\Public_java_projects\\Matrix_block_swap\\src\\input.txt",
                 "C:\\Users\\Working\\IdeaProjects\\Public_java_projects\\Matrix_block_swap\\src\\output.txt");
+        if(u==null) return;
         Matrix m = create_2_pow_n_matrix_from_file(u);
         m.enter_matrix_from_file();
         u.out.write("Исходная матрица:\n");
