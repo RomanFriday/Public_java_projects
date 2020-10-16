@@ -41,7 +41,7 @@ public class Utl {
             }
         }
     }
-    public int get_int_from_file() throws IOException, FileIsOver {
+    public int get_int_from_file() throws FileIsOver {
         int x = 0;
         while(true) {
             while(in.hasNext()){

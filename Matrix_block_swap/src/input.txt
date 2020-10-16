@@ -1,13 +1,11 @@
 * * *
 -1
-int (2pow-1 = 1/2 ) = 0 - matrix size can not be zero
+int (2pow-1=1/2)=0 - matrix size can not be zero
 *
 *
 *
 9
 (2pow9=512) > max_size - imposed restriction
-
-
 2
 ;-)
 1
