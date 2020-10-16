@@ -14,7 +14,7 @@ public class Utl {
     FileWriter out = null;
     Scanner s = new Scanner(System.in);
     public Utl(){};
-    public Utl(String input, String output){
+    public Utl(String input, String output) throws IOException{
         this.inFile = new File(input);
         this.outFile = new File(output);
         try{
@@ -23,7 +23,7 @@ public class Utl {
         }
         catch (IOException ex){
             System.out.println("Файлы не открылись");
-            return;
+            throw new IOException();
         }
     }
     public int get_int(){

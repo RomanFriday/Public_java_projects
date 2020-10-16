@@ -40,9 +40,14 @@ public class MainClass {
     }
 
     public static void use_text(Utl u) throws IOException, FileIsOver, NoUtl, NegativeSizeMatrix, MaxSizeMatrix, NullObject{
+        try{
         u = new Utl("C:\\Users\\Working\\IdeaProjects\\Public_java_projects\\Matrix_block_swap\\src\\input.txt",
                 "C:\\Users\\Working\\IdeaProjects\\Public_java_projects\\Matrix_block_swap\\src\\output.txt");
-        if(u==null) throw new NoUtl();
+        }
+        catch (IOException ex){
+            System.out.println(ex.getMessage());
+            throw new IOException();
+        }
         Matrix m=null, m1=null;
         try{
             m = create_2_pow_n_matrix_from_file(u);
