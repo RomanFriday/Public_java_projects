@@ -1,7 +1,7 @@
 package com.company;
 
+
 import java.io.IOException;
-import java.util.Scanner;
 
 import my_exceptions.FileIsOver;
 import my_exceptions.MaxSizeMatrix;
@@ -84,7 +84,7 @@ public class MainClass {
         }
     }
 
-    public static void not_use_text(Utl u) throws IOException, NoUtl, NegativeSizeMatrix, MaxSizeMatrix, NullObject{
+    public static void not_use_text(Utl u) throws NoUtl, NegativeSizeMatrix, MaxSizeMatrix, NullObject{
         if(u == null) throw new NoUtl();
         Matrix m=null, m1=null;
         try{
@@ -102,7 +102,7 @@ public class MainClass {
             m1 = m.block_swap();
         } catch (NullObject ex) {
             System.out.println(ex.getMessage());
-            return;
+            throw new NullObject();
         }
         System.out.println("Новая матрица:");
         System.out.println(m1.toString());

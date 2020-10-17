@@ -108,17 +108,15 @@ public class Matrix{
             }
     }
 
-    public Matrix block_swap() throws IOException, NoUtl, NullObject{
+    public Matrix block_swap() throws NullObject{
         Matrix new_m = null;
         try {
             new_m = new Matrix( this);
         }
         catch (NullObject ex){
             System.out.println(ex.getMessage());
-            return null;
-        }
-        if(new_m ==null)
             throw new NullObject();
+        }
         double temp;
         // блоки главной диагонали
         for(int i=0; i<lines/2; i++)
@@ -129,7 +127,7 @@ public class Matrix{
             for(int j=0; j<columns/2; j++){
                 new_m.M[i+(lines+1)/2][j+(columns+1)/2] = M[i][j];
             }
-        // меняем блоки побочной диагонали
+        // блоки побочной диагонали
         for(int i=0; i<lines/2; i++)
             for(int j=0; j<columns/2; j++){
                 new_m.M[i+(lines+1)/2][j] = M[i][j+(columns+1)/2];
