@@ -18,6 +18,12 @@ public class Circle{
         setY0(y0);
     }
 
+    public Circle(Circle c){
+        this.x0 = c.getX0();
+        this.y0 = c.getY0();
+        this.r = c.getR();
+    }
+
     public double getX0() {
         return x0;
     }
@@ -63,6 +69,20 @@ public class Circle{
     public boolean is_intersecting(Circle c){
         double c_d = center_distance(c);
         if( (c_d < this.r + c.getR()) && (c_d > Math.max(this.r, c.getR())) )
+            return true;
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj == null)
+            return false;
+        if(this == obj)
+            return true;
+        if( !(obj instanceof Circle) )
+            return false;
+        Circle o = (Circle) obj;
+        if(o.getX0() == this.x0 && o.getY0() == this.y0 && o.getR() == this.r)
             return true;
         return false;
     }
