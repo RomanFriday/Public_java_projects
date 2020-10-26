@@ -12,16 +12,25 @@ public class MainClass {
         ArrayList<Circle> concentric = new ArrayList<Circle>();
         ArrayList<Circle> concerning = new ArrayList<Circle>();
         ArrayList<Circle> intercecting = new ArrayList<Circle>();
+        Utl u = null;
         try {
-            Utl u = new Utl("input.txt", "output.txt");
+            u = new Utl("input.txt", "output.txt");
             circles_from_file(u, circles);
-            sort(u, circles);
-            for(Circle c: circles)
-                System.out.println(c.toString());
+
         }
         catch (IOException ex){
             System.out.println(ex.getMessage());
+            return;
         }
+        sortRXY(u, circles);
+        System.out.println("\nВсе окружности:");
+        for(Circle c: circles)
+            System.out.println(c.toString());
+        create_concentric(circles, concentric);
+        sortXYR(u, concentric);
+        System.out.println("\nКонцентрические:");
+        for(Circle c: concentric)
+            System.out.println(c.toString());
     }
 
     private static void circles_from_file(Utl u, ArrayList<Circle> circles) {
@@ -47,7 +56,22 @@ public class MainClass {
         }
     }
 
-    private static void sort(Utl u, ArrayList<Circle> circles) {
+    private static void create_concentric(ArrayList<Circle> circles, ArrayList<Circle> concentric) {
+        Utl u = new Utl();
+        for (int i = 1; i < circles.size(); i++){
+            for (int j = 0; j < i; j++) {
+                if (circles.get(i).is_concentric(circles.get(j))) {
+                    if (!u.is_repeat(concentric, circles.get(j)))
+                        concentric.add(new Circle(circles.get(j)));
+                    if (!u.is_repeat(concentric, circles.get(i)))
+                        concentric.add(new Circle(circles.get(i)));
+                    break;
+                }
+            }
+        }
+    }
+
+    private static void sortRXY(Utl u, ArrayList<Circle> circles) {
         // сортировка по радиусу
         u.quick_sort_r(circles,0, circles.size()-1);
         // для каждого радиуса r сортировка по x
@@ -67,6 +91,32 @@ public class MainClass {
                 while( (k < right) && (circles.get(k).getX0() == x) )
                     k++;
                 u.quick_sort_y0(circles, j, k-1);
+                j = k;
+            }
+
+            i = right;
+        }
+    }
+
+    private static void sortXYR(Utl u, ArrayList<Circle> circles) {
+        // сортировка по x0
+        u.quick_sort_x0(circles,0, circles.size()-1);
+        // для каждого x0 сортировка по y
+        for(int i=0; i<circles.size();)
+        {
+            int left = i, right = i;
+            double x0 = circles.get(i).getX0();
+            while( (right < circles.size()) && (circles.get(right).getX0() == x0) )
+                right++;
+            u.quick_sort_y0(circles, left, right-1);
+
+            // для каждого y сортировка по r
+            for(int j=left; j<right;){
+                int k=j;
+                double y = circles.get(j).getY0();
+                while( (k < right) && (circles.get(k).getY0() == y) )
+                    k++;
+                u.quick_sort_r(circles, j, k-1);
                 j = k;
             }
 
