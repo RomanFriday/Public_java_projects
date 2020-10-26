@@ -66,9 +66,9 @@ public class Circle{
         return false;
     }
 
-    public boolean is_intersecting(Circle c){
+    public boolean is_intercecting(Circle c){
         double c_d = center_distance(c);
-        if( (c_d < this.r + c.getR()) && (c_d > Math.max(this.r, c.getR())) )
+        if( (c_d < this.r + c.getR()) && (c_d > Math.max(this.r, c.getR())-Math.min(this.r, c.getR())) )
             return true;
         return false;
     }

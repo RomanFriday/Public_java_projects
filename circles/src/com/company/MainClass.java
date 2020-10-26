@@ -10,13 +10,10 @@ public class MainClass {
     public static void main(String[] args) {
         ArrayList<Circle> circles = new ArrayList<Circle>();
         ArrayList<Circle> concentric = new ArrayList<Circle>();
-        ArrayList<Circle> concerning = new ArrayList<Circle>();
-        ArrayList<Circle> intercecting = new ArrayList<Circle>();
         Utl u = null;
         try {
             u = new Utl("input.txt", "output.txt");
             circles_from_file(u, circles);
-
         }
         catch (IOException ex){
             System.out.println(ex.getMessage());
@@ -26,11 +23,18 @@ public class MainClass {
         System.out.println("\nВсе окружности:");
         for(Circle c: circles)
             System.out.println(c.toString());
+
         create_concentric(circles, concentric);
         sortXYR(u, concentric);
         System.out.println("\nКонцентрические:");
-        for(Circle c: concentric)
-            System.out.println(c.toString());
+        print_concentric(concentric);
+
+        System.out.println("\nКасающиеся:");
+        print_concerning(circles);
+
+        System.out.println("\nПересекающиеся:");
+        print_intercecting(circles);
+
     }
 
     private static void circles_from_file(Utl u, ArrayList<Circle> circles) {
@@ -66,6 +70,41 @@ public class MainClass {
                     if (!u.is_repeat(concentric, circles.get(i)))
                         concentric.add(new Circle(circles.get(i)));
                     break;
+                }
+            }
+        }
+    }
+
+    private static void print_concentric(ArrayList<Circle> concentric) {
+        for(int i=0; i<concentric.size(); i++){
+            System.out.println(concentric.get(i).toString());
+            if(i<concentric.size()-1)
+                if( (concentric.get(i+1).getX0()!=concentric.get(i).getX0()) )
+                    System.out.println();
+        }
+    }
+
+    private static void print_concerning(ArrayList<Circle> circles){
+        Utl u = new Utl();
+        for (int i = 1; i < circles.size(); i++){
+            for (int j = 0; j < i; j++) {
+                if (circles.get(i).is_concerning(circles.get(j))) {
+                    System.out.println(circles.get(i).toString());
+                    System.out.println(circles.get(j).toString());
+                    System.out.println();
+                }
+            }
+        }
+    }
+
+    private static void print_intercecting(ArrayList<Circle> circles){
+        Utl u = new Utl();
+        for (int i = 1; i < circles.size(); i++){
+            for (int j = 0; j < i; j++) {
+                if (circles.get(i).is_intercecting(circles.get(j))) {
+                    System.out.println(circles.get(i).toString());
+                    System.out.println(circles.get(j).toString());
+                    System.out.println();
                 }
             }
         }
