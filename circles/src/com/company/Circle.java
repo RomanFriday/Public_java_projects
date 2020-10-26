@@ -9,13 +9,13 @@ public class Circle{
 
     public Circle(double x0, double y0, double r) throws NegativeRadius {
         try{
-        setR(x0);
+          setR(r);
         }
         catch (NegativeRadius ex){
             throw new NegativeRadius();
         }
-        setX0(y0);
-        setY0(r);
+        setX0(x0);
+        setY0(y0);
     }
 
     public double getX0() {
@@ -69,7 +69,18 @@ public class Circle{
 
     @Override
     public String toString(){
-        return "(x - "+getX0()+")^2 + (y - "+getY0()+")^2 = ("+getR()+")^2";
+        StringBuilder s = new StringBuilder("(x ");
+        if(this.x0 < 0)
+            s.append(" + "+(-this.x0));
+        else
+            s.append(" - "+this.x0);
+        s.append(")^2 + (y ");
+        if(this.y0 < 0)
+            s.append(" + "+(-this.y0));
+        else
+            s.append(" - "+this.y0);
+        s.append(")^2 = ("+this.r+")^2");
+        return s.toString();
     }
 
 }
