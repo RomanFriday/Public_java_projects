@@ -16,24 +16,21 @@ public class MainClass {
             circles_from_file(u, circles);
         }
         catch (IOException ex){
+            System.out.println("Файлы не открылись");
+            return;
+        }
+        sortRXY(circles);
+        create_concentric(circles, concentric);
+        sortXYR(concentric);
+        print_to_console(circles, concentric);
+        try{
+            print_to_file(u, circles, concentric);
+            u.out.close();
+            u.in.close();
+        }catch (IOException ex) {
             System.out.println(ex.getMessage());
             return;
         }
-        sortRXY(u, circles);
-        System.out.println("\nВсе окружности:");
-        for(Circle c: circles)
-            System.out.println(c.toString());
-
-        create_concentric(circles, concentric);
-        sortXYR(u, concentric);
-        System.out.println("\nКонцентрические:");
-        print_concentric(concentric);
-
-        System.out.println("\nКасающиеся:");
-        print_concerning(circles);
-
-        System.out.println("\nПересекающиеся:");
-        print_intercecting(circles);
 
     }
 
@@ -84,14 +81,41 @@ public class MainClass {
         }
     }
 
+    private static void print_concentric_to_file(Utl u, ArrayList<Circle> concentric) throws IOException{
+        for(int i=0; i<concentric.size(); i++){
+            try{
+                u.out.write(concentric.get(i).toString()+"\n");
+                if(i<concentric.size()-1)
+                    if( (concentric.get(i+1).getX0()!=concentric.get(i).getX0()) )
+                        u.out.write("\n");
+            }catch(IOException ex){
+                throw ex;
+            }
+        }
+    }
+
     private static void print_concerning(ArrayList<Circle> circles){
         Utl u = new Utl();
         for (int i = 1; i < circles.size(); i++){
             for (int j = 0; j < i; j++) {
                 if (circles.get(i).is_concerning(circles.get(j))) {
                     System.out.println(circles.get(i).toString());
-                    System.out.println(circles.get(j).toString());
-                    System.out.println();
+                    System.out.println(circles.get(j).toString()+"\n");
+                }
+            }
+        }
+    }
+
+    private static void print_concerning_to_file(Utl u, ArrayList<Circle> circles) throws IOException{
+        for (int i = 1; i < circles.size(); i++){
+            for (int j = 0; j < i; j++) {
+                try {
+                    if (circles.get(i).is_concerning(circles.get(j))) {
+                        u.out.write(circles.get(i).toString()+"\n");
+                        u.out.write(circles.get(j).toString()+"\n\n");
+                    }
+                }catch (IOException ex){
+                    throw ex;
                 }
             }
         }
@@ -103,14 +127,63 @@ public class MainClass {
             for (int j = 0; j < i; j++) {
                 if (circles.get(i).is_intercecting(circles.get(j))) {
                     System.out.println(circles.get(i).toString());
-                    System.out.println(circles.get(j).toString());
-                    System.out.println();
+                    System.out.println(circles.get(j).toString()+"\n");
                 }
             }
         }
     }
 
-    private static void sortRXY(Utl u, ArrayList<Circle> circles) {
+    private static void print_intercecting_to_file(Utl u, ArrayList<Circle> circles) throws IOException{
+        for (int i = 1; i < circles.size(); i++){
+            for (int j = 0; j < i; j++) {
+                try {
+                    if (circles.get(i).is_intercecting(circles.get(j))) {
+                        u.out.write(circles.get(i).toString()+"\n");
+                        u.out.write(circles.get(j).toString()+"\n\n");
+                    }
+                }catch (IOException ex){
+                    throw ex;
+                }
+            }
+        }
+    }
+
+    private static void print_to_console(ArrayList<Circle> circles, ArrayList<Circle> concentric){
+        System.out.println("\nВсе окружности:");
+        for(Circle c: circles)
+            System.out.println(c.toString());
+
+        System.out.println("\nКонцентрические:");
+        print_concentric(concentric);
+
+        System.out.println("\nКасающиеся:");
+        print_concerning(circles);
+
+        System.out.println("\nПересекающиеся:");
+        print_intercecting(circles);
+    }
+
+    private static void print_to_file(Utl u, ArrayList<Circle> circles, ArrayList<Circle> concentric) throws IOException{
+        try{
+            u.out.write("\nВсе окружности:\n");
+            for(Circle c: circles)
+                u.out.write(c.toString() + "\n");
+
+            u.out.write("\nКонцентрические:\n");
+            print_concentric_to_file(u, concentric);
+
+            u.out.write("\nКасающиеся:\n");
+            print_concerning_to_file(u, circles);
+
+            u.out.write("\nПересекающиеся:\n");
+            print_intercecting_to_file(u, circles);
+        } catch (IOException ex){
+            throw ex;
+        }
+    }
+
+    private static void sortRXY(ArrayList<Circle> circles) {
+        Utl u = new Utl();
         // сортировка по радиусу
         u.quick_sort_r(circles,0, circles.size()-1);
         // для каждого радиуса r сортировка по x
@@ -137,7 +210,8 @@ public class MainClass {
         }
     }
 
-    private static void sortXYR(Utl u, ArrayList<Circle> circles) {
+    private static void sortXYR(ArrayList<Circle> circles) {
+        Utl u = new Utl();
         // сортировка по x0
         u.quick_sort_x0(circles,0, circles.size()-1);
         // для каждого x0 сортировка по y

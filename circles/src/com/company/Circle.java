@@ -12,7 +12,7 @@ public class Circle{
           setR(r);
         }
         catch (NegativeRadius ex){
-            throw new NegativeRadius();
+            throw ex;
         }
         setX0(x0);
         setY0(y0);

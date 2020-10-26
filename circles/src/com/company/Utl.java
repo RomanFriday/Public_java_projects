@@ -27,7 +27,7 @@ public class Utl {
         }
         catch (IOException ex){
             System.out.println("Файлы не открылись");
-            throw new IOException();
+            throw ex;
         }
     }
 
