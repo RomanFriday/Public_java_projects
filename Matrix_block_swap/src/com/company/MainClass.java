@@ -46,7 +46,7 @@ public class MainClass {
         }
         catch (IOException ex){
             System.out.println(ex.getMessage());
-            throw new IOException();
+            throw ex;
         }
         Matrix m=null, m1=null;
         try{
@@ -68,19 +68,19 @@ public class MainClass {
         catch (IOException ex)
         {
             System.out.println(ex.getMessage());
-            throw new IOException();
+            throw ex;
         }
         catch (NullObject ex) {
             System.out.println(ex.getMessage());
-            throw new NullObject();
+            throw ex;
         }
         catch (FileIsOver ex) {
             System.out.println(ex.getMessage());
-            throw new FileIsOver();
+            throw ex;
         }
         catch (NoUtl ex) {
             System.out.println(ex.getMessage());
-            throw new NoUtl();
+            throw ex;
         }
     }
 
@@ -94,7 +94,7 @@ public class MainClass {
         }
         catch (NoUtl ex){
             System.out.println(ex.getMessage());
-            throw new NoUtl();
+            throw ex;
         }
         System.out.println("Исходная матрица:");
         System.out.println(m.toString());
@@ -102,7 +102,7 @@ public class MainClass {
             m1 = m.block_swap();
         } catch (NullObject ex) {
             System.out.println(ex.getMessage());
-            throw new NullObject();
+            throw ex;
         }
         System.out.println("Новая матрица:");
         System.out.println(m1.toString());
@@ -126,7 +126,7 @@ public class MainClass {
             }
             catch (FileIsOver ex){
                 System.out.println(ex.getMessage());
-                throw new FileIsOver();
+                throw ex;
             }
             catch(NegativeSizeMatrix ex){
                 //System.out.println(ex.getMessage());

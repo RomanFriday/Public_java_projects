@@ -115,7 +115,7 @@ public class Matrix{
         }
         catch (NullObject ex){
             System.out.println(ex.getMessage());
-            throw new NullObject();
+            throw ex;
         }
         double temp;
         // блоки главной диагонали
