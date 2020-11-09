@@ -2,8 +2,9 @@ package com.company;
 
 import my_exceptions.NegativePrice;
 import my_exceptions.WrongFormatText;
+import my_interface.MoreWords;
 
-public class Telegram {
+public class Telegram implements MoreWords {
     final double word_price;
     public String text;
     public Telegram(double word_price, String text) throws NegativePrice, WrongFormatText {
@@ -274,6 +275,44 @@ public class Telegram {
                 text = text.replaceAll(pr, " ");
         }
         return text;
+    }
+
+    @Override
+    public boolean is_more(Telegram telegram)
+    {
+        if(count_of_words() > telegram.count_of_words())
+            return true;
+        return false;
+    }
+
+    @Override
+    public boolean is_more(Urgent urgent)
+    {
+        if(count_of_words() > urgent.count_of_words())
+            return true;
+        return false;
+    }
+
+    @Override
+    public boolean is_more(Artistic artistic)
+    {
+        if(count_of_words() > artistic.count_of_words())
+            return true;
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj == null)
+            return false;
+        if(this == obj)
+            return true;
+        if( !(obj instanceof Telegram) )
+            return false;
+        Telegram telegram = (Telegram)obj;
+        if(this.text.equals(telegram.text))
+            return true;
+        return false;
     }
 
     @Override
