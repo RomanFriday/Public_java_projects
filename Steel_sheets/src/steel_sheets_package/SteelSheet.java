@@ -28,6 +28,8 @@ public abstract class SteelSheet {
 
     public abstract double area();
 
+    public abstract double getA();
+
     public double mass(){
         return density * thickness * area() / (1000*1000*1000);
     }

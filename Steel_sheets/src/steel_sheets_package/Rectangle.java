@@ -27,6 +27,7 @@ public class Rectangle extends SteelSheet{
         return a*b;
     }
 
+    @Override
     public double getA() {
         return a;
     }

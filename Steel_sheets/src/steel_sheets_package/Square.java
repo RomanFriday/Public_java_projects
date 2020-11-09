@@ -22,6 +22,7 @@ public class Square extends SteelSheet{
         return a*a;
     }
 
+    @Override
     public double getA() {
         return a;
     }

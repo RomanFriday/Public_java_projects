@@ -30,6 +30,7 @@ public class Triangle extends SteelSheet{
         return Math.sqrt( p * (p-a) * (p-b) * (p-c) );
     }
 
+    @Override
     public double getA() {
         return a;
     }

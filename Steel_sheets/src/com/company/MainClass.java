@@ -1,5 +1,6 @@
 package com.company;
 
+import my_comporators.*;
 import my_exceptions.NotPositive;
 import my_exceptions.SquareNotRectangle;
 import my_exceptions.WrongTriangle;
@@ -8,6 +9,8 @@ import steel_sheets_package.Square;
 import steel_sheets_package.SteelSheet;
 import steel_sheets_package.Triangle;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class MainClass {
@@ -19,6 +22,31 @@ public class MainClass {
         SteelSheet [] array_ss = new SteelSheet[quantity];
         for(int i=0; i<quantity; i++)
             array_ss[i] = create_steel_sheet();
+
+        AreaComporator AC = new AreaComporator();
+        MassComporator MC = new MassComporator();
+        Comparator <SteelSheet> comp1 = AC.thenComparing(MC);
+        Arrays.sort(array_ss, comp1);
+        for(SteelSheet ss: array_ss)
+            System.out.println(ss.area() + " " + ss.mass());
+
+        System.out.println("\n\n");
+
+        ThicknessComporator TC = new ThicknessComporator();
+        DensityComporator DC = new DensityComporator();
+        Comparator <SteelSheet> comp2 = TC.thenComparing(DC);
+        Arrays.sort(array_ss, comp2);
+        for(SteelSheet ss: array_ss)
+            System.out.println(ss.getThickness() + " " + ss.getDensity());
+
+        System.out.println("\n\n");
+
+        Length_Comparator LC = new Length_Comparator();
+        Arrays.sort(array_ss, LC);
+        for(SteelSheet ss: array_ss)
+            if(ss instanceof Rectangle)
+                System.out.println(ss.toString());
+
     }
 
     public static int get_int(){
@@ -137,22 +165,22 @@ public class MainClass {
 1
 10 30 40
 2
-10 60
+8 60
 3
-10 30 40 50
+6 30 40 50
 3
-10 60 60 60
+4 60 60 60
 2
-10 40
+2 40
 1
-10 50 100
+1 50 100
 1
-10 10 10
+3 10 10
 10 20
 1
-10 50 6000
+5 50 6000
 1
-10 1000 300
+7 1000 300
 
 
 
