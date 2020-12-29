@@ -3,25 +3,39 @@ package com.company;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.company.*;
+import my_comparators.*;
 import my_exceptions.*;
 
 public class MainClass {
     public static void main(String[] args) {
         ArrayList<Circle> circles = new ArrayList<Circle>();
         ArrayList<Circle> concentric = new ArrayList<Circle>();
+        System.out.println("Если хотите ввести окружности из файла, введите 0.\n");
         Utl u = null;
-        try {
-            u = new Utl("input.txt", "output.txt");
-            circles_from_file(u, circles);
+        int is_from_file = u.get_int();
+        if(is_from_file==0)
+        {
+            try {
+                u = new Utl("input.txt", "output.txt");
+                circles_from_file(u, circles);
+            }
+            catch (IOException ex){
+                System.out.println("Файлы не открылись");
+                return;
+            }
         }
-        catch (IOException ex){
-            System.out.println("Файлы не открылись");
-            return;
+        else
+        {
+
         }
-        sortRXY(circles);
+        X_comparator x_c = new X_comparator();
+        Y_comparator y_c = new Y_comparator();
+        R_comparator r_c = new R_comparator();
+        circles.sort(r_c.thenComparing(x_c.thenComparing(y_c)));
+        //sortRXY(circles);
         create_concentric(circles, concentric);
-        sortXYR(concentric);
+        concentric.sort(x_c.thenComparing(y_c.thenComparing(r_c)));
+        //sortXYR(concentric);
         print_to_console(circles, concentric);
         try{
             print_to_file(u, circles, concentric);
@@ -45,7 +59,7 @@ public class MainClass {
                     r = u.get_double_from_file();
                 }while (r < 0);
                 c = new Circle(x0, y0, r);
-                if(!u.is_repeat(circles, c))
+                if(!is_repeat(circles, c))
                     circles.add(c);
             }
             catch (FileIsOver ex){
@@ -57,14 +71,37 @@ public class MainClass {
         }
     }
 
+    private static void circles_from_console(Utl u, ArrayList<Circle> circles) {
+        double x0 = 0, y0 = 0, r = 0;
+        Circle c = null;
+        while(true) {
+            try {
+                x0 = u.get_double();
+                y0 = u.get_double();
+                while(true){
+                    r = u.get_double();
+                    if(r>=0)
+                           break;
+                    System.err.println("\nРадиус окружности должен быть неотрицателен.\n Введите значение радиуса заново: ");
+                }
+                c = new Circle(x0, y0, r);
+                if(!is_repeat(circles, c))
+                    circles.add(c);
+            }
+            catch (NegativeRadius ex) {
+                ;// нвеозможно
+            }
+        }
+    }
+
     private static void create_concentric(ArrayList<Circle> circles, ArrayList<Circle> concentric) {
         Utl u = new Utl();
         for (int i = 1; i < circles.size(); i++){
             for (int j = 0; j < i; j++) {
                 if (circles.get(i).is_concentric(circles.get(j))) {
-                    if (!u.is_repeat(concentric, circles.get(j)))
+                    if (!is_repeat(concentric, circles.get(j)))
                         concentric.add(new Circle(circles.get(j)));
-                    if (!u.is_repeat(concentric, circles.get(i)))
+                    if (!is_repeat(concentric, circles.get(i)))
                         concentric.add(new Circle(circles.get(i)));
                     break;
                 }
@@ -121,7 +158,7 @@ public class MainClass {
         }
     }
 
-    private static void print_intercecting(ArrayList<Circle> circles){
+    private static void print_intersecting(ArrayList<Circle> circles){
         Utl u = new Utl();
         for (int i = 1; i < circles.size(); i++){
             for (int j = 0; j < i; j++) {
@@ -133,7 +170,7 @@ public class MainClass {
         }
     }
 
-    private static void print_intercecting_to_file(Utl u, ArrayList<Circle> circles) throws IOException{
+    private static void print_intersecting_to_file(Utl u, ArrayList<Circle> circles) throws IOException{
         for (int i = 1; i < circles.size(); i++){
             for (int j = 0; j < i; j++) {
                 try {
@@ -160,7 +197,7 @@ public class MainClass {
         print_concerning(circles);
 
         System.out.println("\nПересекающиеся:");
-        print_intercecting(circles);
+        print_intersecting(circles);
     }
 
     private static void print_to_file(Utl u, ArrayList<Circle> circles, ArrayList<Circle> concentric) throws IOException{
@@ -176,64 +213,19 @@ public class MainClass {
             print_concerning_to_file(u, circles);
 
             u.out.write("\nПересекающиеся:\n");
-            print_intercecting_to_file(u, circles);
+            print_intersecting_to_file(u, circles);
         } catch (IOException ex){
             throw ex;
         }
     }
 
-    private static void sortRXY(ArrayList<Circle> circles) {
-        Utl u = new Utl();
-        // сортировка по радиусу
-        u.quick_sort_r(circles,0, circles.size()-1);
-        // для каждого радиуса r сортировка по x
-        for(int i=0; i<circles.size();)
-        {
-            int left = i,right = i;
-            double r = circles.get(i).getR();
-            while( (right < circles.size()) && (circles.get(right).getR() == r) )
-                right++;
-            u.quick_sort_x0(circles, left, right-1);
-
-            // для каждого x сортировка по y
-            i = left;
-            for(int j=left; j<right;){
-                int k=j;
-                double x = circles.get(j).getX0();
-                while( (k < right) && (circles.get(k).getX0() == x) )
-                    k++;
-                u.quick_sort_y0(circles, j, k-1);
-                j = k;
-            }
-
-            i = right;
-        }
+    private static boolean is_repeat(ArrayList<Circle> circles, Circle circle){
+        for(Circle c: circles)
+            if(c.equals(circle))
+                return true;
+        return false;
     }
 
-    private static void sortXYR(ArrayList<Circle> circles) {
-        Utl u = new Utl();
-        // сортировка по x0
-        u.quick_sort_x0(circles,0, circles.size()-1);
-        // для каждого x0 сортировка по y
-        for(int i=0; i<circles.size();)
-        {
-            int left = i, right = i;
-            double x0 = circles.get(i).getX0();
-            while( (right < circles.size()) && (circles.get(right).getX0() == x0) )
-                right++;
-            u.quick_sort_y0(circles, left, right-1);
+    private Circle create_circle()
 
-            // для каждого y сортировка по r
-            for(int j=left; j<right;){
-                int k=j;
-                double y = circles.get(j).getY0();
-                while( (k < right) && (circles.get(k).getY0() == y) )
-                    k++;
-                u.quick_sort_r(circles, j, k-1);
-                j = k;
-            }
-
-            i = right;
-        }
-    }
 }
