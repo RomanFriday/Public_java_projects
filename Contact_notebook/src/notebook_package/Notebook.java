@@ -1,9 +1,10 @@
 package notebook_package;
 
 import my_comparators.FullNameComparator;
+import my_exceptions.AlreadyExists;
+import my_exceptions.NotExists;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 
 public class Notebook {
@@ -25,10 +26,23 @@ public class Notebook {
         return contacts.get(index);
     }
 
+    public int getSize(){
+        return contacts.size();
+    }
 
-    public Person new_person(Person person) {
-            contacts.add(person);
-            return person;
+    public int get_person_index(Person person) throws NotExists {
+        for(int i=0; i<getSize(); i++)
+            if(person.equals(contacts.get(i)))
+                return i;
+        throw new NotExists(); // здесь решать проблему нельзя
+    }
+
+    public Person new_person(Person person) throws AlreadyExists {
+        for (Person p: contacts)
+            if(p.equals_name(person))
+                throw new AlreadyExists(); // игнорировать или ошибка? - здесь решить проблему нельзя
+        contacts.add(person);
+        return person;
     }
 
     public Person remove(int index) {
@@ -41,14 +55,13 @@ public class Notebook {
         return person;
     }
 
-    public void sort(Comparator<Person> c)
-    {
+    public void sort(Comparator<Person> c) {
         contacts.sort(c);
     }
 
     public ArrayList<Person> found(String s){
         ArrayList<Person> founded = new ArrayList<Person>();
-        if(s==null || s.equals(""))
+        if(s==null /*|| s.equals("")*/)
             return founded;
         for(Person person: contacts){
             if(person.get_full_name().contains(s) ||

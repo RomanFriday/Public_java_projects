@@ -2,15 +2,20 @@ package notebook_package;
 
 import my_exceptions.NumberException;
 
+import java.util.Locale;
+
 public class Person {
     protected String  surname, name, patronymic; // Фамилия Имя Отчество ( {"Иванов", "Иван", Иванович"} ... )
-    protected String general_number, mobile_number; // Номера телефонов ( "    *110* +7 (915) - 666 - 13 - 42#" ... )
+    protected String general_number, mobile_number; // Номера телефонов ( "    *110* +7 905 666  13  42#" ... )
     protected String status; // статус ( друг, начальник, сантехник, сын маминой подруги ... )
     protected String address; // адрес ( "Союзная 144" ...)
 
     public Person() {
-        name = surname = patronymic = "";
-        general_number = mobile_number = "";
+        name = "";
+        surname = "";
+        patronymic = "";
+        general_number = "";
+        mobile_number = "";
         status = "";
         address = "";
     }
@@ -21,12 +26,12 @@ public class Person {
         setName(name);
         setPatronymic(patronymic);
         try{
-        setGeneral_number(general_number);
+         setGeneral_number(general_number);
         setMobile_number(mobile_number);
         } catch (NumberException ex) {
             throw ex; // здесь решать проблему нельзя
         }
-        setStatus(status);
+        setStatus(status.toLowerCase());
         setAddress(address);
     }
 
@@ -48,14 +53,16 @@ public class Person {
         this.name = name;
         this.surname = surname;
         this.patronymic = patronymic;
-        general_number = mobile_number = "";
+        general_number = "";
+        mobile_number = "";
         status = "";
         address = "";
     }
 
     public Person(String full_name) {
         set_full_name(full_name);
-        general_number = mobile_number = "";
+        general_number = "";
+        mobile_number = "";
         status = "";
         address = "";
     }
@@ -110,23 +117,39 @@ public class Person {
     }
 
     public void setGeneral_number(String general_number) throws NumberException {
-        if(!general_number.matches("([\\s0-9+\\-*]*(\\([\\s0-9+\\-*]*\\))*)*"))
+        if(!general_number.matches("[\\s0-9#+*]*"))
             throw new NumberException(); // здесь решать проблему нельзя
         this.general_number = general_number;
     }
 
     public void setMobile_number(String mobile_number) throws NumberException {
-        if(!mobile_number.matches("([\\s0-9+\\-*]*(\\([\\s0-9+\\-*]*\\))*)*"))
+        if(!mobile_number.matches("[\\s0-9#+*]*"))
             throw new NumberException(); // здесь решать проблему нельзя
         this.mobile_number = mobile_number;
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.status = status.toLowerCase();
     }
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public boolean equals_name(Person person){
+        if(person.surname.equals(surname) &&
+                person.name.equals(name) &&
+                person.patronymic.equals(patronymic))
+            return true;
+        return false;
+    }
+
+    public boolean is_empty(){
+        if(surname.equals("") && name.equals("") && patronymic.equals(""))
+            if(general_number.equals("") && mobile_number.equals(""))
+                if(address.equals("") && status.equals(""))
+                    return true;
+        return false;
     }
 
     @Override
@@ -139,9 +162,9 @@ public class Person {
             return false;
         Person person = (Person)obj;
         if(surname.equals(person.surname) && name.equals(person.name) && patronymic.equals(person.patronymic))
-                if(general_number.equals(person.general_number) && mobile_number.equals(person.mobile_number))
-                    if(status.equals(person.status) && address.equals(person.address))
-                        return true;
+            if(general_number.equals(person.general_number) && mobile_number.equals(person.mobile_number))
+                if(status.equals(person.status) && address.equals(person.address))
+                    return true;
         return false;
     }
 
